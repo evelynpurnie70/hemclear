@@ -1,0 +1,677 @@
+<section
+  class="targeted-support targeted-support--{{ section.id }}"
+  style="
+    --support-bg: {{ section.settings.background_color }};
+    --support-heading-color: {{ section.settings.heading_color }};
+    --support-accent-color: {{ section.settings.accent_color }};
+    --support-text-color: {{ section.settings.text_color }};
+  "
+>
+  <div class="targeted-support__container">
+
+    <div class="targeted-support__content">
+
+      {% if section.settings.eyebrow != blank %}
+        <h2 class="targeted-support__heading targeted-support__eyebrow">
+          {{ section.settings.eyebrow }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="targeted-support__heading">
+          {{ section.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subheading != blank %}
+        <h3 class="targeted-support__subheading">
+          {{ section.settings.subheading }}
+        </h3>
+      {% endif %}
+
+      {% if section.settings.description != blank %}
+        <div class="targeted-support__description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+
+      <div class="targeted-support__buttons">
+        {% if section.settings.button_1_text != blank %}
+          <a
+            href="{{ section.settings.button_1_link }}"
+            class="targeted-support__button targeted-support__button--primary"
+          >
+            {{ section.settings.button_1_text }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.button_2_text != blank %}
+          <a
+            href="{{ section.settings.button_2_link }}"
+            class="targeted-support__button targeted-support__button--secondary"
+          >
+            {{ section.settings.button_2_text }}
+          </a>
+        {% endif %}
+      </div>
+
+      {% if section.blocks.size > 0 %}
+        <div class="targeted-support__features">
+
+          {% for block in section.blocks %}
+            <div
+              class="targeted-support__feature"
+              {{ block.shopify_attributes }}
+            >
+
+              <div class="targeted-support__feature-icon">
+                {% if block.settings.announcement_icon != blank %}
+                 {% render 'custom-image', image: block.settings.announcement_icon %}
+                {% else %}
+                  {% case forloop.index %}
+                    {% when 1 %}
+                        {% render 'custom-image', image: block.settings.announcement_icon %}
+                    {% when 2 %}
+                        {% render 'custom-image', image: block.settings.announcement_icon %}
+                      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 35H35" stroke="currentColor" stroke-width="2"/>
+                        <path d="M17 35V17H29V35" stroke="currentColor" stroke-width="2"/>
+                        <path d="M29 20L38 11" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="38" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+                        <path d="M17 22H29" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+
+                    {% when 3 %}
+                      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 39C24 39 11 31 11 20C11 15 14 12 18 12C21 12 23 14 24 17C25 14 27 12 30 12C34 12 37 15 37 20C37 31 24 39 24 39Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M10 29C14 27 17 23 18 18" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+
+                    {% when 4 %}
+                      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 6L39 12V22C39 31 33 38 24 42C15 38 9 31 9 22V12L24 6Z" stroke="currentColor" stroke-width="2"/>
+                        <path d="M17 24L22 29L32 18" stroke="currentColor" stroke-width="2"/>
+                      </svg>
+                  {% endcase %}
+                {% endif %}
+              </div>
+
+              {% if block.settings.title != blank %}
+                <div class="targeted-support__feature-title">
+                  {{ block.settings.title }}
+                </div>
+              {% endif %}
+
+              {% if block.settings.text != blank %}
+                <div class="targeted-support__feature-text">
+                  {{ block.settings.text }}
+                </div>
+              {% endif %}
+
+            </div>
+
+            {% unless forloop.last %}
+              <div class="targeted-support__divider"></div>
+            {% endunless %}
+
+          {% endfor %}
+
+        </div>
+      {% endif %}
+
+    </div>
+
+    <div class="targeted-support__media">
+
+      {% if section.settings.hero_image != blank %}
+        {{
+          section.settings.hero_image
+          | image_url: width: 1600
+          | image_tag:
+            loading: 'eager',
+            widths: '500, 700, 900, 1200, 1600',
+            sizes: '(max-width: 749px) 100vw, 55vw',
+            class: 'targeted-support__image'
+        }}
+      {% else %}
+        <div class="targeted-support__image-placeholder">
+          {{ 'hero-apparel-1' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+</section>
+
+
+<style>
+  .targeted-support--{{ section.id }} {
+    width: 100%;
+    background: var(--support-bg);
+    color: var(--support-text-color);
+    overflow: hidden;
+  }
+
+  .targeted-support--{{ section.id }} *,
+  .targeted-support--{{ section.id }} *::before,
+  .targeted-support--{{ section.id }} *::after {
+    box-sizing: border-box;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__container {
+    position: relative;
+    display: flex;
+    width: 100%;
+    max-width: 1400px;
+    min-height: 540px;
+    margin: 0 auto;
+    padding: 0 50px;
+  }
+.targeted-support--{{ section.id }} .targeted-support__media::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  width: 180px;
+  height: 100%;
+  pointer-events: none;
+
+  background: linear-gradient(
+    to left,
+    rgba(31, 52, 73, 0.95) 0%,
+    rgba(31, 52, 73, 0.65) 25%,
+    rgba(31, 52, 73, 0.25) 55%,
+    rgba(31, 52, 73, 0) 100%
+  );
+}
+  /* Content */
+
+  .targeted-support--{{ section.id }} .targeted-support__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 53%;
+    padding: 93px 20px 93px 0;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__eyebrow.targeted-support__heading {
+    margin-bottom: 0;
+    color: var(--support-heading-color);
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__heading {
+    margin: 0;
+    color: var(--support-accent-color);
+    font-weight: 600;
+    font-size: 57px;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__subheading {
+    margin: 10px 0 0;
+    color: var(--support-heading-color);
+    font-weight: 600;
+    font-size: 57px;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__description {
+    max-width: 510px;
+    margin-top: 12px;
+    color: var(--support-text-color);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  /* Buttons */
+
+  .targeted-support--{{ section.id }} .targeted-support__buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 200px;
+    min-height: 56px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    transition: all 0.25s ease;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__button--primary {
+    border: 1px solid var(--support-accent-color);
+    background: var(--support-accent-color);
+    color: #fff;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__button--primary:hover {
+    background: transparent;
+    color: #fff;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__button--secondary {
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    background: transparent;
+    color: #fff;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__button--secondary:hover {
+    border-color: #fff;
+    background: #fff;
+    color: var(--support-bg);
+  }
+
+  /* Features */
+
+  .targeted-support--{{ section.id }} .targeted-support__features {
+    display: flex;
+    align-items: stretch;
+    margin-top: 30px;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 130px;
+    text-align: center;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 50px;
+    margin-bottom: 5px;
+    color: #fff;
+  }
+  .targeted-support--{{ section.id }}  .targeted-support__feature-icon img {
+    width: 40px;
+    height: 50px;
+    }
+
+  .targeted-support--{{ section.id }} .targeted-support__feature-icon svg {
+    display: block;
+    width: 34px;
+    height: 34px;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__feature-title {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__feature-text {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 9px;
+    line-height: 1.25;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__divider {
+    width: 1px;
+    min-height: 48px;
+    margin: 0 8px;
+    background: rgba(255, 255, 255, 0.35);
+    display:block;
+  }
+
+  /* Image */
+
+  .targeted-support--{{ section.id }} .targeted-support__media {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 98%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__media::before {
+    content: '';
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: -150px;
+    width: 300px;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      var(--support-bg) 0%,
+      rgba(31, 52, 73, 0.8) 35%,
+      rgba(31, 52, 73, 0) 100%
+    );
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__image-placeholder {
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
+  }
+
+  .targeted-support--{{ section.id }} .targeted-support__image-placeholder svg {
+    width: 100%;
+    height: 100%;
+  }
+
+
+  /* Tablet */
+
+  @media screen and (max-width: 989px) {
+    .targeted-support--{{ section.id }} .targeted-support__container {
+      min-height: 500px;
+      padding: 0 30px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__content {
+      width: 57%;
+      padding-right: 10px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__media {
+      width: 58%;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__feature {
+      width: 100px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__divider {
+      margin: 0 3px;
+    }
+  }
+
+
+  /* Mobile */
+
+  @media screen and (max-width: 749px) {
+    .targeted-support--{{ section.id }} .targeted-support__container {
+      display: flex;
+      flex-direction: column;
+      min-height: auto;
+      padding: 0;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__content {
+      order: 2;
+      width: 100%;
+      padding: 35px 20px 40px;
+      text-align: center;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__eyebrow {
+      font-size: 32px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__heading {
+      font-size: 40px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__subheading {
+      font-size: 22px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__description {
+      max-width: 500px;
+      margin-right: auto;
+      margin-left: auto;
+     font-size: 17px;
+        line-height: 1.55;
+        font-weight: 400;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__buttons {
+      justify-content: center;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__features {
+      justify-content: center;
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__feature {
+      width: 25%;
+      max-width: 100px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__divider {
+      margin: 0 2px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__media {
+      position: relative;
+      order: 1;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 10;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__media::before {
+      display: none;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__image {
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+
+  @media screen and (max-width: 480px) {
+    .targeted-support--{{ section.id }} .targeted-support__eyebrow {
+      font-size: 28px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__heading {
+      font-size: 34px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__subheading {
+      font-size: 20px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__buttons {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__button {
+      width: 100%;
+      max-width: 220px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__feature {
+      width: 25%;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__feature-title {
+      font-size: 8px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__feature-text {
+      font-size: 8px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__feature-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .targeted-support--{{ section.id }} .targeted-support__feature-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+</style>
+
+
+{% schema %}
+{
+  "name": "Targeted Support Hero",
+  "tag": "section",
+  "class": "section-targeted-support",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#1f3449"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "default": "#0069d9"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Description color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Targeted"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main heading",
+      "default": "Hemorrhoid Support"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "For More Comfortable Days."
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>A targeted daily formula designed to help relieve hemorrhoid discomfort while supporting healthy circulation, vein function, and bowel regularity.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_1_text",
+      "label": "Primary button text",
+      "default": "Shop HemClear"
+    },
+    {
+      "type": "url",
+      "id": "button_1_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "button_2_text",
+      "label": "Secondary button text",
+      "default": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "button_2_link",
+      "label": "Secondary button link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "announcement_icon",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Doctor Formulated"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Clinically studied ingredients"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Targeted Support Hero",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Doctor Formulated",
+            "text": "Expertly formulated"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Clinically Studied",
+            "text": "Studied ingredients"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Internal & External",
+            "text": "Hemorrhoid support"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "90-Day",
+            "text": "Guarantee"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
